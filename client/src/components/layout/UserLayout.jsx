@@ -1,7 +1,9 @@
 import React from "react";
 import User from '../../assets/user.png';
 
-export default function UserLayout() {
+export default function UserLayout({
+  user
+}) {
   return  (
     <div className="relative flex items-center">
     <img className="w-10 h-10 rounded-full" src={User} alt="" />
