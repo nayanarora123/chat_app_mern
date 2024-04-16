@@ -1,0 +1,55 @@
+/* src/index.css */
+
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
+
+body{
+    overflow: hidden;
+}
+
+.h-full {
+    height: 100vh;
+}
+
+.h-80 {
+    height: 74vh;
+}
+
+@media (min-width: 640px) {
+    .container {
+        max-width: 100%;
+    }   
+}
+
+.emoji-picker-react {
+  @apply bg-white dark:bg-gray-800
+  }
+
+  .emoji-picker-react .emoji-search {
+    @apply dark:bg-gray-800  dark:text-white dark:border-gray-700 dark:focus:border-sky-500
+    }
+  
+    .emoji-picker-react .emoji-categories  {
+      @apply dark:bg-gray-800;
+      }
+
+      .emoji-picker-react .emoji-scroll-wrapper::-webkit-scrollbar {
+        @apply dark:bg-gray-800 w-5
+      }
+
+      .emoji-picker-react .emoji-categories button  {
+        @apply contrast-0
+        }
+
+      .emoji-picker-react .emoji-scroll-wrapper .emoji-group::before {
+        @apply dark:bg-gray-800  dark:text-white
+      }
+
+  @layer base {
+    body {
+      @apply bg-white dark:bg-gray-900;
+    }
+  }
