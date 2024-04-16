@@ -20,7 +20,7 @@ export default function AllUsers({
       <ul className="overflow-auto h-[30rem] h-full">
         <h2 className="my-2 mb-2 ml-2 text-gray-900 dark:text-white">Chats</h2>
         <li>
-          {...Array(5).keys().map((chatRoom, index) => (
+          {nonContacts.map((chatRoom, index) => (
             <div
               key={index}
               className={
@@ -34,7 +34,9 @@ export default function AllUsers({
             }
             //   onClick={() => changeCurrentChat(index, chatRoom)}
             >
-              <Contact />
+              <Contact 
+                 user={chatRoom}
+              />
             </div>
           ))}
         </li>
@@ -48,7 +50,9 @@ export default function AllUsers({
               className="flex items-center px-3 py-2 text-sm bg-white border-b border-gray-200 hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700 cursor-pointer"
             //   onClick={() => handleNewChatRoom(nonContact)}
             >
-              <UserLayout />
+              <UserLayout 
+                user={nonContact}
+              />
             </div>
           ))}
         </li>

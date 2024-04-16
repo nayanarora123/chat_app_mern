@@ -2,6 +2,7 @@ import "./App.css";
 import React from 'react';
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
+import Profile from './pages/Profile';
 import Register from './pages/Register';
 import PageNotFound from "./pages/PageNotFound";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -20,7 +21,13 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" 
+          <Route path="/profile" 
+          element={
+          <PrivateRouteMiddleware>
+            <Profile />
+          </PrivateRouteMiddleware>} 
+          />
+          <Route path="/"
           element={
           <PrivateRouteMiddleware>
             <Chat />
