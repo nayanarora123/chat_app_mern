@@ -15,6 +15,8 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+
+    const [profile, setProfile] = useState();
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -44,6 +46,8 @@ export function AuthProvider({ children }) {
     }, [])
 
     const values = {
+        setProfile,
+        profile,
         currentUser,
         error,
         setError,

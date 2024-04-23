@@ -1,3 +1,4 @@
+import axios from 'axios';
 import auth from "../config/firebase";
 import { io } from "socket.io-client";
 
@@ -18,7 +19,25 @@ export const initiateSocketConection = async () => {
 }
 
 export const getAllUsers = async () => {
-    const request = await fetch(`${BASE_URL}/api/user`);
-    const response = await request.json();
+    const request = await axios.get(`${BASE_URL}/api/user`);
+    const response = request.data;
+    return response;
+}
+
+export const getUser = async (userId) => {
+    const request = await axios.get(`${BASE_URL}/api/user/${userId}`);
+    const response = request.data;
+    return response;
+}
+
+export const getChatRooms = async (userId) => {
+    const request = await axios.get(`${BASE_URL}/api/room/${userId}`);
+    const response = request.data;
+    return response;
+}
+
+export const createChatRoom = async (members) => {
+    const request = await axios.post(`${BASE_URL}/api/room`, members);
+    const response = request.data;
     return response;
 }

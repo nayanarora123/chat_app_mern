@@ -1,5 +1,5 @@
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
@@ -9,7 +9,7 @@ import ThemeToggler from "./ThemeToggler";
 export default function Header() {
   const [modal, setModal] = useState(false);
 
-  const { currentUser } = useAuth();
+  const { currentUser, profile } = useAuth();
 
   return (
     <>
@@ -38,7 +38,7 @@ export default function Header() {
                 >
                   <img
                     className="h-8 w-8 rounded-full"
-                    src={currentUser.photoURL}
+                    src={profile}
                     alt=""
                   />
                 </Link>
