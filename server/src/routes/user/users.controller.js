@@ -6,7 +6,11 @@ export const getAllUsers = async (req, res) => {
     const users = [];
 
     try {
+<<<<<<< HEAD
         const listUsersResult = await auth.listUsers(maxResults)
+=======
+        const listUsersResult = await auth.listUsers(maxResults);
+>>>>>>> origin/master
         listUsersResult.users.forEach((userRecord) => {
             const { uid, email, displayName, photoURL } = userRecord;
             users.push({ uid, email, displayName, photoURL });
