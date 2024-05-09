@@ -13,7 +13,7 @@ export default function Header() {
 
   return (
     <>
-      <nav className="px- px-2 sm:px-4 py-2.5 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700 text-gray-900 text-sm rounded border dark:text-white">
+      <nav className="px- h-100 px-2 sm:px-4 py-2.5 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700 text-gray-900 text-sm rounded border dark:text-white">
         <div className="container mx-auto flex flex-wrap items-center justify-between">
           <Link to="/" className="flex">
             <span className="self-center text-lg font-semibold whitespace-nowrap text-gray-900 dark:text-white">
@@ -21,6 +21,9 @@ export default function Header() {
             </span>
           </Link>
           <div className="flex md:order-2">
+            <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-blue">
+              Hello, { currentUser && currentUser.displayName }
+            </span>
             <ThemeToggler />
 
             {currentUser && (

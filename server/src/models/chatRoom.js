@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const chatRoomSchema = mongoose.Schema(
+const schema = mongoose.Schema(
     {
         members: []
     },
@@ -9,6 +9,6 @@ const chatRoomSchema = mongoose.Schema(
     }
 )
 
-const ChatRoom = mongoose.model('chatRoom', chatRoomSchema);
+const ChatRoom = mongoose.model('chatRoom', schema);
 
 export default ChatRoom;

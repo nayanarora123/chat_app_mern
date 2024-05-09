@@ -2,7 +2,7 @@ import axios from 'axios';
 import auth from "../config/firebase";
 import { io } from "socket.io-client";
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:3000/api';
 
 const getUserToken = async () => {
     const currentUser = auth.currentUser;
@@ -12,32 +12,48 @@ const getUserToken = async () => {
 
 export const initiateSocketConection = async () => {
     const token = await getUserToken();
-    const socket = io(BASE_URL, {
+    const socket = io('http://localhost:3000', {
         auth: { token }
     });
     return socket;
 }
 
 export const getAllUsers = async () => {
-    const request = await axios.get(`${BASE_URL}/api/user`);
+    const request = await axios.get(`${BASE_URL}/user`);
     const response = request.data;
     return response;
 }
 
 export const getUser = async (userId) => {
-    const request = await axios.get(`${BASE_URL}/api/user/${userId}`);
+    const request = await axios.get(`${BASE_URL}/user/${userId}`);
     const response = request.data;
     return response;
 }
 
 export const getChatRooms = async (userId) => {
-    const request = await axios.get(`${BASE_URL}/api/room/${userId}`);
+    const request = await axios.get(`${BASE_URL}/room/${userId}`);
     const response = request.data;
     return response;
 }
 
 export const createChatRoom = async (members) => {
-    const request = await axios.post(`${BASE_URL}/api/room`, members);
+    const request = await axios.post(`${BASE_URL}/room`, members);
     const response = request.data;
     return response;
 }
+
+export const getMessagesOfChatRoom = async (chatRoomId) => {
+    const request = await axios.get(`${BASE_URL}/message/${chatRoomId}`);
+    const response = request.data;
+    return response;
+
+};
+
+export const sendMessage = async (messageBody) => {
+    try {
+        const res = await axios.post(`${BASE_URL}/message`, messageBody);
+        return res.data;
+    } catch (e) {
+        console.error(e);
+    }
+};

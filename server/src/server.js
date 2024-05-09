@@ -7,7 +7,7 @@ import { Server } from 'socket.io';
 import { connectMongo } from './config/mongo.js';
 import userRouter from './routes/user/users.route.js';
 import chatRoomRouter from './routes/chatRoom/chatRoom.route.js';
-import { log } from 'console';
+import chatMessageRouter from './routes/chatMessage/chatMessage.router.js';
 
 
 dotenv.config();
@@ -32,35 +32,57 @@ app.use(cors({
 
 app.use(express.json());
 
-const onlineUsers = new Map();
-
 // app.use(express.static(path.join(__dirname, 'public')));
+
+const onlineUsers = new Map();
 
 app.use('/api/user', userRouter);
 app.use('/api/room', chatRoomRouter);
+app.use('/api/message', chatMessageRouter);
 
 // app.get('/*', (req, res) => {
 //     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 // });
 
 
+function getKey(onlineUsers, socketId) {
+    for (const [key, val] of onlineUsers.entries()) {
+        if (val === socketId) return key;
+    }
+}
 
 io.on('connection', (socket) => {
-    
+
     socket.on('addUser', (userId) => {
         onlineUsers.set(userId, socket.id);
-        socket.emit('getUsers', Array.from(onlineUsers))
-    })
+        io.emit('getUsers', Array.from(onlineUsers))
+    });
+
+    socket.on("sendMessage", ({ senderId, receiverId, message }) => {
+        const sendUserSocket = onlineUsers.get(receiverId);
+        if (sendUserSocket) {
+            socket.to(sendUserSocket).emit("getMessage", {
+                senderId,
+                message,
+            });
+        }
+    });
+
+    socket.on('disconnect', (reason) => {
+        onlineUsers.delete(getKey(onlineUsers, socket.id));
+        console.log(`Client ${socket.id} disconnected: ${reason}`);
+        socket.broadcast.emit('getUsers', Array.from(onlineUsers));
+    });
 
 });
 
 const PORT = process.env.PORT || 3001
 
-async function startHttpServer(){
+async function startServer() {
     await connectMongo();
     httpServer.listen(PORT, () => {
         console.log(`Server started on ${PORT}`);
     });
 }
 
-startHttpServer();
+startServer();
