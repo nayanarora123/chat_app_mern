@@ -21,9 +21,11 @@ export default function Header() {
             </span>
           </Link>
           <div className="flex md:order-2">
-            <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-blue">
-              Hello, { currentUser && currentUser.displayName }
-            </span>
+            { (currentUser) &&
+              <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-blue">
+                Hello, { currentUser?.displayName } 
+              </span>
+            }
             <ThemeToggler />
 
             {currentUser && (
@@ -32,18 +34,17 @@ export default function Header() {
                   className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none rounded-lg text-sm p-2.5"
                   onClick={() => setModal(true)}
                 >
-                  <ArrowRightStartOnRectangleIcon className="h-8 w-8" aria-hidden="true" />
+                  <ArrowRightStartOnRectangleIcon
+                    className="h-8 w-8"
+                    aria-hidden="true"
+                  />
                 </button>
 
                 <Link
                   to="/profile"
                   className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none rounded-full text-sm p-2.5"
                 >
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src={profile}
-                    alt=""
-                  />
+                  <img className="h-8 w-8 rounded-full" src={profile} alt="" />
                 </Link>
               </>
             )}

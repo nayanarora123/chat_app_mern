@@ -24,7 +24,7 @@ export default function AllUsers({
 
   useEffect(() => {
     const ids = chatRooms.map(chatRoom => {
-      return chatRoom.members.find(member => member !== currentUser.uid);
+      return chatRoom.members.find(member => (member !== currentUser.uid ));
     })
     setContactIds(ids);
   }, [chatRooms, currentUser.uid]);

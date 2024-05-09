@@ -25,7 +25,6 @@ export default function Chat() {
 
   const [searchQuery, setSearchQuery] = useState();
   const [currentChat, setCurrentChat] = useState();
-  const [isContact, setIsContact] = useState();
 
   const { currentUser, setProfile } = useAuth();
   const socket = useRef();
@@ -68,48 +67,30 @@ export default function Chat() {
     setFilteredChatRooms(chatRooms);
   }, [chatRooms, users])
 
-  useEffect(() => {
-    if (isContact) {
-      setFilteredUsers([]);
-    } else {
-      setFilteredChatRooms([]);
-    }
-  }, [isContact]);
-
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   }
 
   const handleChange = (query) => {
     setSearchQuery(query);
-
+  
+    // Filter users based on the search query
     const searchedUsers = users.filter(user => {
-      return user.displayName?.toLowerCase().includes(query.toLowerCase());
+      return user.displayName?.toLowerCase().includes(query.toLowerCase()) && user.uid !== currentUser.uid;
     });
-
-    const searchedUsersId = searchedUsers.map(u => u.uid);
-
-    // If there are initial contacts
-    if (chatRooms.length !== 0) {
-      chatRooms.forEach((chatRoom) => {
-
-        // Check if searched user is a contact or not.
-        const isUserContact = chatRoom.members.some(
-          (e) => e !== currentUser.uid && searchedUsersId.includes(e)
-        );
-
-        setIsContact(isUserContact);
-        console.log(isUserContact);
-
-        isUserContact
-          ? setFilteredChatRooms([chatRoom])
-          : setFilteredUsers(searchedUsers);
-      });
-    } else {
-      setFilteredUsers(searchedUsers);
-    }
-
+    
+    // Filter chat rooms based on the search query
+    const searchedChatRooms = chatRooms.filter(chatRoom => {
+      const memberId = chatRoom.members.find(memberId => memberId !== currentUser.uid);
+      const memberName = users.find(user => user.uid === memberId)?.displayName;
+      return memberName.toLowerCase().includes(query.toLowerCase());
+    });
+    
+    // Set filtered users and chat rooms
+    setFilteredUsers(searchedUsers);
+    setFilteredChatRooms(searchedChatRooms);
   }
+  
 
 
   return (
