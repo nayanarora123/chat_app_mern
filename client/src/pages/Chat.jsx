@@ -1,12 +1,12 @@
-import React, { 
-  useEffect, 
-  useRef, 
-  useState 
+import React, {
+  useEffect,
+  useRef,
+  useState
 } from "react";
-import { 
-  initiateSocketConection, 
-  getAllUsers, 
-  getChatRooms 
+import {
+  initiateSocketConection,
+  getAllUsers,
+  getChatRooms
 } from "../services/chatService";
 import SearchUsers from "../components/chat/SearchUsers";
 import AllUsers from "../components/chat/AllUsers";
@@ -36,8 +36,9 @@ export default function Chat() {
       socket.current = connect;
       socket.current.emit('addUser', currentUser.uid);
       socket.current.on('getUsers', (onlineUsers) => {
-        setOnlineUsersId(onlineUsers);
-      })
+        const usersId = onlineUsers.map(u => u[0]);
+        setOnlineUsersId(usersId);
+      });
     }
 
     getSocket();
@@ -63,17 +64,17 @@ export default function Chat() {
   }, [currentUser.uid]);
 
   useEffect(() => {
+    setFilteredUsers(users);
+    setFilteredChatRooms(chatRooms);
+  }, [chatRooms, users])
+
+  useEffect(() => {
     if (isContact) {
       setFilteredUsers([]);
     } else {
       setFilteredChatRooms([]);
     }
   }, [isContact]);
-
-  useEffect(() => {
-    setFilteredUsers(users);
-    setFilteredChatRooms(chatRooms);
-  }, [chatRooms, users])
 
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
@@ -91,11 +92,14 @@ export default function Chat() {
     // If there are initial contacts
     if (chatRooms.length !== 0) {
       chatRooms.forEach((chatRoom) => {
+
         // Check if searched user is a contact or not.
         const isUserContact = chatRoom.members.some(
           (e) => e !== currentUser.uid && searchedUsersId.includes(e)
         );
+
         setIsContact(isUserContact);
+        console.log(isUserContact);
 
         isUserContact
           ? setFilteredChatRooms([chatRoom])
@@ -110,11 +114,11 @@ export default function Chat() {
 
   return (
     <>
-      <div className="container mx-auto h-full">
+      <div className="containe mx-auto h-full">
         <div className="h-full min-w-full bg-white border-x border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 rounded lg:grid lg:grid-cols-3">
           <div className="h-full bg-white border-r border-gray-200 dark:bg-gray-900 dark:border-gray-700 lg:col-span-1">
             <SearchUsers
-            handleSearch={handleChange} 
+              handleSearch={handleChange}
             />
             <AllUsers
               users={searchQuery === "" ? users : filteredUsers}
@@ -128,10 +132,10 @@ export default function Chat() {
 
           {currentChat ? (
             <ChatRoom
-            currentChat={currentChat}
-            currentUser={currentUser}
-            socket={socket}
-            onlineUsersId={onlineUsersId}
+              currentChat={currentChat}
+              currentUser={currentUser}
+              socket={socket}
+              onlineUsersId={onlineUsersId}
             />
           ) : (
             <Welcome />
