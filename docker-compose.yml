@@ -1,0 +1,44 @@
+services:
+
+  # node api service
+  server:
+    build: ./server
+    image: myapp-server
+    container_name: myapp-node-server
+    command: npm run watch
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    env_file: ./server/.env
+    environment:
+      - NODE_ENV=development
+
+  # mongo database service
+  mongo:
+    image: mongo:latest
+    container_name: chat_db_container
+    restart: unless-stopped
+    volumes:
+      - mongo_chat_data:/data/db
+
+  # vite frontend service
+  client:
+    build: ./client
+    image: chat-client-image
+    container_name: chat-app-client
+    command: npm run dev
+    volumes:
+      - ./client/:/app
+      - /app/node_modules
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+
+volumes:
+  mongo_chat_data: {}
+  node_modules:

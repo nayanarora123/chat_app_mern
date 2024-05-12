@@ -73,24 +73,23 @@ export default function Chat() {
 
   const handleChange = (query) => {
     setSearchQuery(query);
-  
+
     // Filter users based on the search query
     const searchedUsers = users.filter(user => {
       return user.displayName?.toLowerCase().includes(query.toLowerCase()) && user.uid !== currentUser.uid;
     });
-    
+
     // Filter chat rooms based on the search query
     const searchedChatRooms = chatRooms.filter(chatRoom => {
       const memberId = chatRoom.members.find(memberId => memberId !== currentUser.uid);
       const memberName = users.find(user => user.uid === memberId)?.displayName;
       return memberName.toLowerCase().includes(query.toLowerCase());
     });
-    
+
     // Set filtered users and chat rooms
     setFilteredUsers(searchedUsers);
     setFilteredChatRooms(searchedChatRooms);
   }
-  
 
 
   return (

@@ -20,19 +20,19 @@ const httpServer = http.createServer(app);
 
 const io = new Server(httpServer, {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: 'http://localhost:3000',
         method: ['GET', 'POST']
     }
 });
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST']
 }));
 
 app.use(express.json());
 
-// app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, '..', 'public')));
 
 const onlineUsers = new Map();
 
@@ -41,7 +41,7 @@ app.use('/api/room', chatRoomRouter);
 app.use('/api/message', chatMessageRouter);
 
 // app.get('/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+//     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 // });
 
 
