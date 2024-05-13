@@ -28,6 +28,7 @@ export default function ChatRoom({
   useEffect(() => {
     const fetchData = async () => {
       const res = await getMessagesOfChatRoom(currentChat._id);
+      console.log(res);
       setMessages(res);
     };
 
@@ -87,7 +88,7 @@ export default function ChatRoom({
         <div className="relative w-full p-6 h-80 overflow-y-auto h-[30rem] bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700">
           <ul className="space-y-2">
             {messages?.map((message, index) => (
-              <div key={index} ref={scrollRef}>
+              <div key={index} ref={scrollRef} >
                 <Message message={message} self={currentUser.uid} />
               </div>
             ))}
