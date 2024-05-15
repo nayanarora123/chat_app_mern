@@ -5,6 +5,11 @@ const schema = mongoose.Schema(
         chatRoomId: String,
         sender: String,
         message: String,
+        status: {
+            type: Number,
+            min: 0,
+            max: 2
+        }
     },
     { timestamps: true }
 );

@@ -2,13 +2,29 @@ import { format } from "timeago.js";
 import { useEffect, useState } from "react";
 import { AdjustmentsVerticalIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Modal from "../layout/Modal";
+import {
+  STATUS_DELETE_FOR_EVERYONE,
+  STATUS_DELETE_FOR_ME
+} from '../../utils/Constants';
+
+import {
+  deleteMessage
+} from "../../services/chatService";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Message({ message, self }) {
-  console.log(message);
+export default function Message(
+  {
+    message,
+    self,
+    socket,
+    setMessages
+  }) {
+
+
+    console.log(message);
 
   const [hover, setHover] = useState(false);
   const [actionList, setActionList] = useState(false);
@@ -28,7 +44,23 @@ export default function Message({ message, self }) {
     };
   }, [])
 
-  const handleDelete = () => {
+  useEffect(() => {
+    socket.current?.on('filteredMessages', ({ messageId, status }) => {
+      setMessages(messages => {
+        return messages.map(message => {
+          if (message._id === messageId) {
+            return { ...message, status: status }
+          } 
+          return message;
+        })
+      });
+    })
+  }, []);
+
+  const handleDelete = async (e) => {
+    const status = (e.target.textContent === 'Delete For Me' ? STATUS_DELETE_FOR_ME : STATUS_DELETE_FOR_EVERYONE);
+    await deleteMessage(message._id, status);
+    socket.current?.emit('deleteMessage', { messageId: message._id, status });
     setModal(false);
   }
 
@@ -55,7 +87,7 @@ export default function Message({ message, self }) {
             >
               <span className="block font-normal ">{message.message}</span>
               {hover && <button onClick={() => setActionList(!actionList)}>
-                <AdjustmentsVerticalIcon className="h-5 w-5 text-neutral-900 ml-3" />
+                <AdjustmentsVerticalIcon className={classNames(self !== message.sender ? "text-white-900" : "text-neutral-900", "h-5", "w-5", "ml-3")} />
               </button>}
             </div>
             {actionList && <div className="absolute text-white action-message-bar">
@@ -77,7 +109,12 @@ export default function Message({ message, self }) {
         modal={modal}
         setModal={setModal}
         dialogTitle={'Delete Message'}
-        buttonTitle={'Delete'}
+        buttons={
+          [
+            { title: 'Delete For Everyone', click: handleDelete },
+            { title: 'Delete For Me', click: handleDelete }
+          ]
+        }
         handleClick={handleDelete}
       />}
     </>

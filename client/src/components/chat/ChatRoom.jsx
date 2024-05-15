@@ -1,13 +1,19 @@
-import React, { 
-  useState, 
-  useEffect, 
-  useRef 
+import React, {
+  useState,
+  useEffect,
+  useRef
 } from "react";
 
-import { 
-  getMessagesOfChatRoom, 
-  sendMessage 
+import {
+  getMessagesOfChatRoom,
+  sendMessage
 } from "../../services/chatService";
+
+import {
+  STATUS_ACTIVE,
+  STATUS_DELETE_FOR_EVERYONE,
+  STATUS_DELETE_FOR_ME
+} from '../../utils/Constants';
 
 import Contact from "./Contact";
 import ChatForm from "./ChatForm";
@@ -28,7 +34,6 @@ export default function ChatRoom({
   useEffect(() => {
     const fetchData = async () => {
       const res = await getMessagesOfChatRoom(currentChat._id);
-      console.log(res);
       setMessages(res);
     };
 
@@ -46,6 +51,7 @@ export default function ChatRoom({
       setIncomingMessage({
         senderId: data.senderId,
         message: data.message,
+        status: data.status
       });
     });
   }, []);
@@ -63,12 +69,14 @@ export default function ChatRoom({
       senderId: currentUser.uid,
       receiverId: receiverId,
       message: message,
+      status: STATUS_ACTIVE,
     });
 
     const messageBody = {
       chatRoomId: currentChat._id,
       sender: currentUser.uid,
       message: message,
+      status: STATUS_ACTIVE,
     };
     const res = await sendMessage(messageBody);
     setMessages([...messages, res]);
@@ -87,11 +95,14 @@ export default function ChatRoom({
 
         <div className="relative w-full p-6 h-80 overflow-y-auto h-[30rem] bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700">
           <ul className="space-y-2">
-            {messages?.map((message, index) => (
-              <div key={index} ref={scrollRef} >
-                <Message message={message} self={currentUser.uid} />
+            {messages?.filter(message =>
+              message.status !== STATUS_DELETE_FOR_EVERYONE &&
+              (message.sender !== currentUser.uid || message.status !== STATUS_DELETE_FOR_ME)
+            ).map((message, index) => {
+              return <div key={index} ref={scrollRef} >
+                <Message message={message} self={currentUser.uid} socket={socket} setMessages={setMessages} />
               </div>
-            ))}
+            })}
           </ul>
         </div>
 

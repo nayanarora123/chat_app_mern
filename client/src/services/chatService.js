@@ -57,3 +57,12 @@ export const sendMessage = async (messageBody) => {
         console.error(e);
     }
 };
+
+export const deleteMessage = async (messageId, deleteAction) => {
+    try {
+        const res = await axios.delete(`${BASE_URL}/message/${messageId}/${deleteAction}`);
+        return res.data;
+    } catch (e) {
+        console.error(e);
+    }
+};

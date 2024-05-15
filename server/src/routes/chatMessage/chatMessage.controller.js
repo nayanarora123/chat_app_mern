@@ -26,3 +26,19 @@ export const getMessages = async (req, res) => {
         });
     }
 };
+
+
+export const deleteMessage = async (req, res) => {
+    try {
+        const message = await ChatMessage.findByIdAndUpdate(
+            req.params.chatMessageId,
+            { status: req.params.deleteMethod },
+            { runValidators: true }
+        )
+        return res.status(204).json(message);
+    } catch (error) {
+        return res.status(409).json({
+            message: error.message,
+        });
+    }
+}

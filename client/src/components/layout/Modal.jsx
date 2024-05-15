@@ -3,13 +3,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 
-export default function Modal({ 
-    modal, 
-    setModal, 
-    handleClick,
-    dialogTitle,
-    buttonTitle
-  }) {
+export default function Modal({
+  modal,
+  setModal,
+  dialogTitle,
+  buttons
+}) {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -40,7 +39,7 @@ export default function Modal({
           >
             &#8203;
           </span>
-          <Transition.Child 
+          <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -63,24 +62,28 @@ export default function Modal({
                       as="h3"
                       className="text-lg leading-6 font-medium text-gray-500 dark:text-gray-400"
                     >
-                      { dialogTitle }?
+                      {dialogTitle}?
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Are you sure you want to { dialogTitle } ?
+                        Are you sure you want to {dialogTitle} ?
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button
-                  type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={handleClick}
-                >
-                  { buttonTitle }
-                </button>
+                {buttons &&
+                  buttons.map(( button, i) => {
+                    return <button key={i}
+                      type="button"
+                      className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={(e) => button.click(e)}
+                    >
+                      {button.title}
+                    </button>
+                  })
+                }
                 <button
                   type="button"
                   className="mt-3 w-full inline-flex justify-center shadow-sm px-4 py-2  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm

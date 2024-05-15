@@ -9,7 +9,6 @@ import userRouter from './routes/user/users.route.js';
 import chatRoomRouter from './routes/chatRoom/chatRoom.route.js';
 import chatMessageRouter from './routes/chatMessage/chatMessage.router.js';
 
-
 dotenv.config();
 
 const __dirname = import.meta.dirname;
@@ -27,7 +26,7 @@ const io = new Server(httpServer, {
 
 app.use(cors({
     origin: 'http://localhost:3000',
-    methods: ['GET', 'POST']
+    methods: ['*']
 }));
 
 app.use(express.json());
@@ -58,15 +57,20 @@ io.on('connection', (socket) => {
         io.emit('getUsers', Array.from(onlineUsers))
     });
 
-    socket.on("sendMessage", ({ senderId, receiverId, message }) => {
+    socket.on("sendMessage", ({ senderId, receiverId, message, status }) => {
         const sendUserSocket = onlineUsers.get(receiverId);
         if (sendUserSocket) {
             socket.to(sendUserSocket).emit("getMessage", {
                 senderId,
                 message,
+                status
             });
         }
     });
+
+    socket.on("deleteMessage", ({ messageId, status }) => {
+        io.emit("filteredMessages", { messageId, status });
+    })
 
     socket.on('disconnect', (reason) => {
         onlineUsers.delete(getKey(onlineUsers, socket.id));
