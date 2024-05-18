@@ -8,7 +8,7 @@ const schema = mongoose.Schema(
         status: {
             type: Number,
             min: 0,
-            max: 2
+            max: 3
         }
     },
     { timestamps: true }

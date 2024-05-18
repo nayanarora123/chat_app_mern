@@ -12,7 +12,8 @@ import {
 import {
   STATUS_ACTIVE,
   STATUS_DELETE_FOR_EVERYONE,
-  STATUS_DELETE_FOR_ME
+  STATUS_RECEIVER_DELETE_FOR_ME,
+  STATUS_SENDER_DELETE_FOR_ME
 } from '../../utils/Constants';
 
 import Contact from "./Contact";
@@ -97,12 +98,13 @@ export default function ChatRoom({
           <ul className="space-y-2">
             {messages?.filter(message =>
               message.status !== STATUS_DELETE_FOR_EVERYONE &&
-              (message.sender !== currentUser.uid || message.status !== STATUS_DELETE_FOR_ME)
-            ).map((message, index) => {
-              return <div key={index} ref={scrollRef} >
+              (message.sender !== currentUser.uid || message.status !== STATUS_SENDER_DELETE_FOR_ME) && 
+              (message.sender === currentUser.uid || message.status !== STATUS_RECEIVER_DELETE_FOR_ME)
+            ).map((message, index) => (
+              <div key={index} ref={scrollRef} >
                 <Message message={message} self={currentUser.uid} socket={socket} setMessages={setMessages} />
               </div>
-            })}
+            ))}
           </ul>
         </div>
 

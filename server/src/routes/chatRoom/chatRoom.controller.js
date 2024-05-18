@@ -1,12 +1,11 @@
 import ChatRoom from "../../models/chatRoom.js";
 
 export async function createChatRoom(req, res) {
-    const newChatRoom = new ChatRoom({
-        members: [req.body.senderId, req.body.receiverId]
-    });
-
+    const body = { members: [req.body.senderId, req.body.receiverId] };
+    const options = { upsert: true, new: true };
+    
     try {
-        await newChatRoom.save();
+        const newChatRoom = await ChatRoom.findOneAndUpdate(body, body, options);
         return res.status(201).json(newChatRoom)
     } catch (error) {
         return res.status(500).json({

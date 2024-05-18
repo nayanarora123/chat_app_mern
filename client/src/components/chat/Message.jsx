@@ -4,7 +4,8 @@ import { AdjustmentsVerticalIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Modal from "../layout/Modal";
 import {
   STATUS_DELETE_FOR_EVERYONE,
-  STATUS_DELETE_FOR_ME
+  STATUS_RECEIVER_DELETE_FOR_ME,
+  STATUS_SENDER_DELETE_FOR_ME
 } from '../../utils/Constants';
 
 import {
@@ -22,9 +23,6 @@ export default function Message(
     socket,
     setMessages
   }) {
-
-
-    console.log(message);
 
   const [hover, setHover] = useState(false);
   const [actionList, setActionList] = useState(false);
@@ -46,6 +44,7 @@ export default function Message(
 
   useEffect(() => {
     socket.current?.on('filteredMessages', ({ messageId, status }) => {
+      console.log(messageId, status);
       setMessages(messages => {
         return messages.map(message => {
           if (message._id === messageId) {
@@ -58,11 +57,23 @@ export default function Message(
   }, []);
 
   const handleDelete = async (e) => {
-    const status = (e.target.textContent === 'Delete For Me' ? STATUS_DELETE_FOR_ME : STATUS_DELETE_FOR_EVERYONE);
+    const status = (e.target.textContent === 'Delete For Everyone' ? STATUS_DELETE_FOR_EVERYONE : 
+    (self === message.sender ? STATUS_SENDER_DELETE_FOR_ME : STATUS_RECEIVER_DELETE_FOR_ME));
     await deleteMessage(message._id, status);
     socket.current?.emit('deleteMessage', { messageId: message._id, status });
     setModal(false);
   }
+
+  const buttons = [
+    { 
+      title: 'Delete For Me', 
+      click: handleDelete 
+    },
+    { 
+      title: 'Delete For Everyone', 
+      click: handleDelete 
+    }
+  ];
 
   return (
     <>
@@ -109,12 +120,7 @@ export default function Message(
         modal={modal}
         setModal={setModal}
         dialogTitle={'Delete Message'}
-        buttons={
-          [
-            { title: 'Delete For Everyone', click: handleDelete },
-            { title: 'Delete For Me', click: handleDelete }
-          ]
-        }
+        buttons={self === message.sender ? buttons : [buttons.shift()]}
         handleClick={handleDelete}
       />}
     </>
