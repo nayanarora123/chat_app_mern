@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import path from 'path';
 import cors from 'cors';
 import express from 'express';
 import userRouter from './routes/user/users.route.js';
@@ -21,10 +22,7 @@ api.use('/api/room', chatRoomRouter);
 api.use('/api/message', chatMessageRouter);
 
 if (process.env.NODE_ENV === "production") {
-    if (!__dirname) {
-        const __dirname = import.meta.dirname;
-    }
-    const path = require("path");
+    const __dirname = import.meta.dirname;
     api.use(express.static(path.join(__dirname, '..', 'public')));
     api.get("*", (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'public', 'index.html'), (err)  => {
