@@ -1,11 +1,12 @@
-import path from 'path';
+import dotenv from "dotenv";
+dotenv.config();
+
 import cors from 'cors';
 import express from 'express';
 import userRouter from './routes/user/users.route.js';
 import chatRoomRouter from './routes/chatRoom/chatRoom.route.js';
 import chatMessageRouter from './routes/chatMessage/chatMessage.router.js';
 
-const __dirname = import.meta.dirname;
 const api = express();
 
 api.use(cors({
@@ -15,14 +16,23 @@ api.use(cors({
 
 api.use(express.json());
 
-// app.use(express.static(path.join(__dirname, '..', 'public')));
-
 api.use('/api/user', userRouter);
 api.use('/api/room', chatRoomRouter);
 api.use('/api/message', chatMessageRouter);
 
-// app.get('/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-// });
+if (process.env.NODE_ENV === "production") {
+    if (!__dirname) {
+        const __dirname = import.meta.dirname;
+    }
+    const path = require("path");
+    api.use(express.static(path.join(__dirname, '..', 'public')));
+    api.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, '..', 'public', 'index.html'), (err)  => {
+            if(err) {
+                res.status(500).send(err)
+            }
+        });
+    })
+}
 
 export default api;
