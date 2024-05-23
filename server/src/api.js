@@ -23,9 +23,9 @@ api.use('/api/message', chatMessageRouter);
 
 if (process.env.NODE_ENV === "production") {
     const __dirname = import.meta.dirname;
-    api.use(express.static(path.join(__dirname, '..', 'public')));
+    api.use(express.static(path.join(__dirname, 'public')));
     api.get("*", (req, res) => {
-        res.sendFile(path.join(__dirname, '..', 'public', 'index.html'), (err)  => {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'), (err)  => {
             if(err) {
                 res.status(500).send({error: err, path: __dirname, cwd: process.cwd()});
             }
