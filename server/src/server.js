@@ -16,11 +16,11 @@ const socketServer = new Server(httpServer, {
 });
 
 async function startServer() {
-    // const PORT = process.env.PORT || 3001
+    const PORT = process.env.PORT || 3001
     await connectMongo();
-    // httpServer.listen(PORT, () => {
-    //     console.log(`Server started on ${PORT}`);
-    // });
+    httpServer.listen(PORT, () => {
+        console.log(`Server started on ${PORT}`);
+    });
 }
 
 startServer();
