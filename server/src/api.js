@@ -22,7 +22,9 @@ api.use('/api/room', chatRoomRouter);
 api.use('/api/message', chatMessageRouter);
 
 if (process.env.NODE_ENV === "production") {
-    const __dirname = import.meta.dirname;
+    // const __dirname = import.meta.dirname;
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
     api.use(express.static(path.join(__dirname, '..', 'public')));
     api.get("*", (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'public', 'index.html'), (err)  => {
