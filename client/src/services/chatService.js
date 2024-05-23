@@ -2,7 +2,7 @@ import axios from 'axios';
 import auth from "../config/firebase";
 import { io } from "socket.io-client";
 
-const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = import.meta.env.VITE_REACT_ENV === 'production' ? '/api' : `${import.meta.env.VITE_BASE_URL}/api`;
 
 const getUserToken = async () => {
     const currentUser = auth.currentUser;
@@ -12,7 +12,7 @@ const getUserToken = async () => {
 
 export const initiateSocketConection = async () => {
     const token = await getUserToken();
-    const socket = io('http://localhost:8000/', {
+    const socket = io(import.meta.env.VITE_REACT_ENV === 'production' ? '/' : `${import.meta.env.VITE_BASE_URL}/`, {
         auth: { token }
     });
     return socket;

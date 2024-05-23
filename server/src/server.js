@@ -25,3 +25,5 @@ async function startServer() {
 
 startServer();
 listenSocketServer(socketServer);
+
+export default api;

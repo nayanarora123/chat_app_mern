@@ -5,13 +5,13 @@
 /.pnp
 .pnp.js
 
-/src/config/*.json
+/src/config/serviceAccountKey.json
 # testing
 /coverage
 
 # production
 /build
-/public
+# /public
 
 # misc
 .DS_Store
@@ -25,3 +25,4 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.vercel
