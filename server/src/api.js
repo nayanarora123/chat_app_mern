@@ -23,11 +23,11 @@ api.use('/api/message', chatMessageRouter);
 
 if (process.env.NODE_ENV === "production") {
     // const __dirname = import.meta.dirname;
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    api.use(express.static(path.join(__dirname, '..', 'public')));
+    // const __filename = fileURLToPath(import.meta.url);
+    // const __dirname = path.dirname(__filename);
+    api.use(express.static(path.join(process.cwd(), '..', 'public')));
     api.get("*", (req, res) => {
-        res.sendFile(path.join(__dirname, '..', 'public', 'index.html'), (err)  => {
+        res.sendFile(path.join(process.cwd(), '..', 'public', 'index.html'), (err)  => {
             if(err) {
                 res.status(500).send(err)
             }
