@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Contact from "./Contact";
 import UserLayout from "../layout/UserLayout";
 import { createChatRoom } from "../../services/chatService";
+import MessageCount from "./MessageCount";
 
 
 function classNames(...classes) {
@@ -61,8 +62,8 @@ export default function AllUsers({
               className={
                 classNames(
                   index === selectedChat ?
-                    "bg-gray-100 dark:bg-gray-700"
-                    : "transition duration-150 ease-in-out cursor-pointer bg-white border-b border-gray-200 hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700",
+                    "bg-gray-100 dark:bg-gray-700 justify-space-between"
+                    : "transition duration-150 ease-in-out justify-space-between cursor-pointer bg-white border-b border-gray-200 hover:bg-gray-100 dark:bg-gray-900 dark:border-gray-700 dark:hover:bg-gray-700",
                   "flex items-center px-3 py-2 text-sm "
                 )
               }
@@ -73,6 +74,7 @@ export default function AllUsers({
                 onlineUsersId={onlineUsersId}
                 currentUser={currentUser}
               />
+              <MessageCount chatRoom={chatRoom} currentUser={currentUser}/>
             </div>
           ))}
         </li>

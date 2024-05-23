@@ -2,6 +2,7 @@ import {
   useState, 
   useEffect 
 } from "react";
+
 import UserLayout from "../layout/UserLayout";
 import { getUser } from "../../services/chatService";
 
@@ -28,7 +29,7 @@ export default function Contact({
 
   }, [chatRoom, currentUser]);
 
-  return <UserLayout 
+  return <UserLayout
     user={contact}
     onlineUsersId={onlineUsersId}
   />;

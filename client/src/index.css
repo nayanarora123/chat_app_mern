@@ -58,6 +58,19 @@
   margin-bottom: 5px;
 }
 
-.action-message-bar ul li button{
+.action-message-bar ul li button {
   padding: 3px;
+}
+
+.justify-space-between {
+  justify-content: space-between !important;
+}
+
+.message-count {
+  color: white;
+  text-align: center;
+  border-radius: 101%;
+  width: 23px;
+  height: 21px;
+  background: green;
 }
