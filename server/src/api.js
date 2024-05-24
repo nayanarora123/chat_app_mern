@@ -11,7 +11,7 @@ import chatMessageRouter from './routes/chatMessage/chatMessage.router.js';
 const api = express();
 
 api.use(cors({
-    origin: 'http://localhost:3000',
+    origin: process.env.ORIGIN_URL,
     methods: ['*']
 }));
 

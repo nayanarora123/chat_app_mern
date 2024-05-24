@@ -10,7 +10,7 @@ import { connectMongo } from './config/mongo.js';
 const httpServer = http.createServer(api);
 const socketServer = new Server(httpServer, {
     cors: {
-        origin: 'http://localhost:3000',
+        origin: process.env.ORIGIN_URL,
         method: ['GET', 'POST']
     }
 });
