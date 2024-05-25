@@ -14,7 +14,6 @@ services:
       - mongo
     env_file: ./server/.env
     environment:
-      - MONGO_URL=mongodb+srv://aroranayan3:MSAFpDIHF2U7iHyA@chat-api.wpafdtg.mongodb.net/chat-api-DB?retryWrites=true&w=majority&appName=Chat-Api
       - NODE_ENV=production
       - PORT=8080
 
