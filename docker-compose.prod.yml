@@ -6,9 +6,6 @@ services:
     image: chatify-prod-image
     container_name: chatify-prod
     command: npm start
-    # volumes:
-    #   - ./server:/app
-    #   - /app/node_modules
     volumes:
       - .:/app
     ports:
@@ -17,6 +14,7 @@ services:
       - mongo
     env_file: ./server/.env
     environment:
+      - MONGO_URL=mongodb+srv://aroranayan3:MSAFpDIHF2U7iHyA@chat-api.wpafdtg.mongodb.net/chat-api-DB?retryWrites=true&w=majority&appName=Chat-Api
       - NODE_ENV=production
       - PORT=8080
 
