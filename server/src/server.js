@@ -21,9 +21,9 @@ async function startServer() {
     httpServer.listen(PORT, () => {
         console.log(`Server started on ${PORT}`);
     });
+    listenSocketServer(socketServer);
 }
 
 startServer();
-listenSocketServer(socketServer);
 
 export default api;
