@@ -25,5 +25,3 @@ async function startServer() {
 }
 
 startServer();
-
-export default api;

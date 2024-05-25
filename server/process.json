@@ -1,0 +1,16 @@
+{
+  "apps": [
+    {
+      "name": "chat-app",
+      "script": "src/server.js",
+      "env": {
+        "PORT": 8080
+      },
+      "env_production": {
+        "PORT": 8080
+      },
+      "instances": "max",
+      "exec_mode": "cluster"
+    }
+  ]
+}
