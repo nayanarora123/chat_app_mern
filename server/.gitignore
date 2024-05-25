@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 
-/src/config/serviceAccountKey.json
+# /src/config/serviceAccountKey.json
 # testing
 /coverage
 
