@@ -21,13 +21,11 @@ api.use('/api/user', userRouter);
 api.use('/api/room', chatRoomRouter);
 api.use('/api/message', chatMessageRouter);
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV) {
     const __dirname = import.meta.dirname;
     api.use(express.static(path.join(__dirname, '..', 'public')));
     api.get("/*", (req, res) => {
-        res.sendFile(path.join(__dirname, '..', 'public', 'index.html'), (err) => {
-            res.status(404).json(err);
-        });
+        res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
     });
 }
 
