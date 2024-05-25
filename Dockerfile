@@ -4,6 +4,8 @@ WORKDIR /app
 
 RUN apk update && apk add bash
 
+RUN npm i pm2 -g
+
 COPY package*.json ./
 
 COPY client/package*.json client/
